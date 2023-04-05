@@ -1,0 +1,18 @@
+import requests
+
+def get_lurk_quotes():
+    url = 'https://quotes.rest/quote/search.json?minlength=50&maxlength=150&query=lurk'
+    response = requests.get(url, headers={'X-TheySaidSo-Api-Secret': 'YOUR_API_KEY'})
+    data = response.json()
+    quotes = data['contents']['quotes']
+    return quotes
+
+def command_handler(username, command):
+    if command.startswith('!lurk'):
+        quotes = get_lurk_quotes()
+        if quotes:
+            quote = quotes[0]['quote']
+            response = f'Here's a quote containing the verb "lurk": {quote}'
+        else:
+            response = 'Sorry, I couldn't find any quotes containing the verb "lurk"'
+        return response
